@@ -1,5 +1,33 @@
 # Changelog
 
+## [2.1.0] - Final React Native Optimization
+
+### Fixed
+
+- **Complete Resolution of Module Errors**: Finally resolved all "Unable to resolve module" errors for LiveKit dependencies
+- **Build Process**: Fixed build process to properly include all required dependencies
+- **Runtime Resolution**: Ensured all modules are properly resolved at runtime
+- **React Native Globals**: Improved LiveKit globals registration with better error handling
+- **Module Import Strategy**: Updated to use dynamic imports for better React Native compatibility
+
+### Added
+
+- **Enhanced Package Exports**: Added proper exports field for better module resolution
+- **Installation Verification Script**: Added `npx retell-verify` command to verify installation
+- **Metro Configuration Guide**: Added METRO_CONFIG.md for bundler configuration help
+- **Comprehensive Testing**: Added final verification tests for build integrity
+
+### Changed
+
+- **Simplified Installation**: Now just `npm install retell-client-rn-sdk` - everything works out of the box
+- **Dependency Management**: Moved all LiveKit dependencies back to regular dependencies for reliable resolution
+- **Build Configuration**: Optimized build process for React Native compatibility
+
+### Removed
+
+- **Complex Setup Scripts**: No longer needed - installation is now straightforward
+- **Peer Dependency Confusion**: Simplified to avoid module resolution issues
+
 ## [2.0.9] - Complete Dependency Management Solution
 
 ### Fixed
@@ -22,8 +50,6 @@
 - **Documentation**: Complete rewrite of installation and troubleshooting guides
 
 ## [2.0.8] - Dependency Fix
-
-// ...existing changelog content...
 
 ### Fixed
 

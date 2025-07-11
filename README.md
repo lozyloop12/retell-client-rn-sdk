@@ -1,0 +1,172 @@
+# Retell AI React Native SDK
+
+A React Native SDK for integrating Retell AI's voice calling capabilities into your mobile applications.
+
+## Installation
+
+### Simple Installation (Recommended)
+
+```bash
+npm install retell-client-rn-sdk
+# or
+yarn add retell-client-rn-sdk
+```
+
+**That's it!** All required dependencies are automatically installed.
+
+### Verify Installation
+
+After installation, you can verify everything is set up correctly:
+
+```bash
+npx retell-client-rn-sdk verify-rn
+```
+
+This will check that all dependencies are properly installed and accessible.
+
+### iOS Setup (iOS only)
+
+```bash
+cd ios && pod install && cd ..
+```
+
+### Permissions
+
+#### iOS Permissions
+
+Add microphone permission to your `ios/YourApp/Info.plist`:
+
+```xml
+<key>NSMicrophoneUsageDescription</key>
+<string>This app needs access to microphone for voice calls</string>
+```
+
+#### Android Permissions
+
+Add permissions to your `android/app/src/main/AndroidManifest.xml`:
+
+```xml
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+```
+
+## Quick Start
+
+```javascript
+import { RetellWebClient } from "retell-client-rn-sdk";
+
+const client = new RetellWebClient();
+
+// Start a call
+await client.startCall({
+  accessToken: "your-access-token",
+  sampleRate: 48000,
+  emitRawAudioSamples: false,
+});
+
+// Listen for events
+client.on("call_started", () => {
+  console.log("Call started");
+});
+
+client.on("call_ended", () => {
+  console.log("Call ended");
+});
+
+client.on("agent_start_talking", () => {
+  console.log("Agent started talking");
+});
+
+client.on("agent_stop_talking", () => {
+  console.log("Agent stopped talking");
+});
+
+// Control the call
+client.mute();
+client.unmute();
+client.stopCall();
+```
+
+## API Reference
+
+### RetellWebClient
+
+#### Methods
+
+- `startCall(config: StartCallConfig): Promise<void>` - Start a voice call
+- `stopCall(): void` - End the current call
+- `mute(): void` - Mute the microphone
+- `unmute(): void` - Unmute the microphone
+- `startAudioPlayback(): Promise<void>` - Start audio playback (may be required on some platforms)
+
+#### Events
+
+- `call_started` - Fired when the call has started
+- `call_ended` - Fired when the call has ended
+- `call_ready` - Fired when the agent is ready to receive audio
+- `agent_start_talking` - Fired when the agent starts speaking
+- `agent_stop_talking` - Fired when the agent stops speaking
+- `update` - Fired when receiving updates from the server
+- `metadata` - Fired when receiving metadata from the server
+- `error` - Fired when an error occurs
+
+#### StartCallConfig
+
+```typescript
+interface StartCallConfig {
+  accessToken: string; // Required: Your Retell AI access token
+  sampleRate?: number; // Optional: Audio sample rate (default: system default)
+  captureDeviceId?: string; // Optional: Specific audio input device ID
+  playbackDeviceId?: string; // Optional: Specific audio output device ID
+  emitRawAudioSamples?: boolean; // Optional: Emit raw audio data for visualization
+}
+```
+
+## React Native Considerations
+
+This SDK is specifically adapted for React Native environments:
+
+- Uses React Native compatible timer functions as fallbacks
+- Handles platform-specific audio APIs
+- Manages React Native lifecycle considerations
+- Audio visualization features are limited compared to web browsers
+
+## Troubleshooting
+
+### Metro Bundler Issues
+
+If you encounter Metro bundling errors, add this to your `metro.config.js`:
+
+```javascript
+const { getDefaultConfig } = require("metro-config");
+
+module.exports = (async () => {
+  const {
+    resolver: { sourceExts, assetExts },
+  } = await getDefaultConfig();
+
+  return {
+    resolver: {
+      assetExts: [...assetExts, "bin"],
+      sourceExts: [...sourceExts, "cjs"],
+    },
+  };
+})();
+```
+
+### Common Issues
+
+- **Audio not working**: Test on physical device (audio doesn't work in simulators)
+- **Permission denied**: Ensure microphone permissions are properly configured
+- **Build errors**: Clean and rebuild your project
+
+## Documentation
+
+- [Integration Guide](./INTEGRATION_GUIDE.md) - Step-by-step setup instructions
+- [Troubleshooting](./TROUBLESHOOTING.md) - Common issues and solutions
+- [Example Implementation](./example/RetellCallExample.tsx) - Complete React Native component
+
+For more information about Retell AI, visit [Retell AI Documentation](https://docs.retellai.com/).

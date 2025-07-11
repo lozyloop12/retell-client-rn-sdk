@@ -1,4 +1,3 @@
-import { registerGlobals } from "@livekit/react-native";
 import { EventEmitter } from "eventemitter3";
 import {
   DataPacket_Kind,
@@ -11,6 +10,18 @@ import {
   Track,
   createAudioAnalyser,
 } from "livekit-client";
+
+// Initialize React Native globals for LiveKit if available
+let livekitGlobalsRegistered = false;
+try {
+  // Dynamic import to handle cases where @livekit/react-native might not be available
+  const { registerGlobals } = require("@livekit/react-native");
+  registerGlobals();
+  livekitGlobalsRegistered = true;
+} catch (error) {
+  console.warn("Failed to register LiveKit globals:", error);
+  // Continue without globals - some functionality may be limited
+}
 
 // React Native compatible timer functions
 const requestAnimationFrame = (callback: () => void): number => {
@@ -31,13 +42,6 @@ const cancelAnimationFrame = (id: number): void => {
 
 const hostUrl = "wss://retell-ai-4ihahnq7.livekit.cloud";
 const decoder = new TextDecoder();
-
-// Initialize React Native globals for LiveKit
-try {
-  registerGlobals();
-} catch (error) {
-  console.warn("Failed to register LiveKit globals:", error);
-}
 
 export interface StartCallConfig {
   accessToken: string;

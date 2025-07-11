@@ -1,17 +1,30 @@
 {
   "name": "retell-client-rn-sdk",
-  "version": "2.0.9",
+  "version": "2.1.0",
   "description": "Retell AI React Native SDK",
   "main": "dist/index.js",
   "module": "dist/index.m.js",
   "types": "dist/index.d.ts",
   "react-native": "dist/index.js",
+  "exports": {
+    ".": {
+      "react-native": "./dist/index.js",
+      "import": "./dist/index.m.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "bin": {
+    "retell-verify": "./scripts/verify-rn-installation.js"
+  },
   "scripts": {
     "build": "rm -rf dist && microbundle --tsconfig tsconfig.json --no-sourcemap",
     "dev": "microbundle watch --tsconfig tsconfig.json --no-sourcemap",
     "prepublishOnly": "npm run build",
     "type-check": "tsc --noEmit",
     "test:import": "node test/import-test.js",
+    "test:compatibility": "node test/compatibility-test.js",
+    "verify-rn": "node scripts/verify-rn-installation.js",
     "postinstall": "node scripts/postinstall.js"
   },
   "keywords": [
@@ -25,27 +38,17 @@
   "license": "ISC",
   "peerDependencies": {
     "react": ">=16.8.0",
-    "react-native": ">=0.60.0",
-    "@livekit/react-native": "^2.7.6",
-    "@livekit/react-native-webrtc": "^125.0.11",
-    "livekit-client": "^2.9.8"
+    "react-native": ">=0.60.0"
   },
-  "peerDependenciesMeta": {
-    "@livekit/react-native": {
-      "optional": false
-    },
-    "@livekit/react-native-webrtc": {
-      "optional": false
-    },
-    "livekit-client": {
-      "optional": false
-    }
-  },
+  "peerDependenciesMeta": {},
   "devDependencies": {
     "microbundle": "^0.15.1",
     "@types/react-native": "^0.72.0"
   },
   "dependencies": {
-    "eventemitter3": "^5.0.1"
+    "eventemitter3": "^5.0.1",
+    "@livekit/react-native": "^2.7.6",
+    "@livekit/react-native-webrtc": "^125.0.11",
+    "livekit-client": "^2.15.2"
   }
 }
