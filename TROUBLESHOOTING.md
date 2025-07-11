@@ -4,22 +4,39 @@
 
 ### ❌ `WebRTC native module not found` or `Cannot read property 'registerGlobals' of undefined`
 
-**This is the #1 issue!** It means you haven't installed the required native WebRTC modules.
+**This is the #1 issue!** These errors mean you haven't installed the required native WebRTC modules **in your React Native project**.
 
 #### ✅ SOLUTION: Complete Installation
 
-You MUST install ALL required packages, not just the SDK:
+**IMPORTANT:** Run these commands in your React Native project directory (where your `package.json` is), not in the SDK folder!
 
 ```bash
-# Install EVERYTHING needed for React Native
+# 1. Navigate to YOUR React Native project
+cd /path/to/your/react-native-project
+
+# 2. Install ALL required packages (not just the SDK!)
 npm install retell-client-rn-sdk @livekit/react-native @livekit/react-native-webrtc livekit-client
 
-# iOS: Install pods (REQUIRED)
+# 3. iOS: Install pods (REQUIRED for iOS)
 cd ios && pod install && cd ..
 
-# Rebuild your app
+# 4. Clean and rebuild your app
+npx react-native clean
 npx react-native run-ios  # or run-android
 ```
+
+#### 🔍 Verify Installation
+
+After installation, verify everything is working:
+
+```bash
+# Run this in YOUR React Native project directory
+npx retell-diagnose  # Quick diagnosis tool
+# or
+npx retell-verify    # Detailed verification
+```
+
+**The diagnosis tool will tell you exactly what's missing and how to fix it!**
 
 #### 📖 Full Setup Guide
 
@@ -32,6 +49,58 @@ This guide covers:
 - ✅ Android configuration
 - ✅ Permissions setup
 - ✅ WebRTC initialization
+
+---
+
+## ⚡ QUICK FIX for Your Specific Errors
+
+If you're seeing these exact errors:
+
+1. **"WebRTC native module not found"**
+2. **"Failed to register LiveKit globals. Ensure @livekit/react-native and @livekit/react-native-webrtc are installed"**
+
+### 🚨 Step-by-Step Fix:
+
+```bash
+# 1. Go to YOUR React Native project directory (not the SDK folder!)
+cd /path/to/your/react-native-app
+
+# 2. Install all required dependencies
+npm install @livekit/react-native @livekit/react-native-webrtc livekit-client
+
+# 3. For iOS projects (if you're targeting iOS)
+cd ios
+pod install
+cd ..
+
+# 4. Clear Metro cache and rebuild
+npx react-native start --reset-cache
+
+# 5. In a new terminal, run your app
+npx react-native run-ios  # or run-android
+```
+
+### 🔍 Verify It's Fixed:
+
+After installation, test with this code:
+
+```javascript
+import { RetellWebClient } from "retell-client-rn-sdk";
+
+const testSDK = async () => {
+  try {
+    await RetellWebClient.registerGlobals();
+    console.log("✅ WebRTC globals registered successfully!");
+
+    const client = new RetellWebClient();
+    console.log("✅ RetellWebClient created successfully!");
+  } catch (error) {
+    console.error("❌ Still having issues:", error.message);
+  }
+};
+
+testSDK();
+```
 
 ---
 

@@ -16,7 +16,8 @@
   },
   "bin": {
     "retell-verify": "./scripts/verify-rn-installation.js",
-    "retell-check-webrtc": "./scripts/verify-webrtc.js"
+    "retell-check-webrtc": "./scripts/verify-webrtc.js",
+    "retell-diagnose": "./scripts/diagnose.js"
   },
   "scripts": {
     "build": "rm -rf dist && microbundle --tsconfig tsconfig.json --no-sourcemap",
