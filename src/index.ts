@@ -13,15 +13,7 @@ import {
 
 // Initialize React Native globals for LiveKit if available
 let livekitGlobalsRegistered = false;
-try {
-  // Dynamic import to handle cases where @livekit/react-native might not be available
-  const { registerGlobals } = require("@livekit/react-native");
-  registerGlobals();
-  livekitGlobalsRegistered = true;
-} catch (error) {
-  console.warn("Failed to register LiveKit globals:", error);
-  // Continue without globals - some functionality may be limited
-}
+// Note: We'll register globals when needed in startCall() for better error handling
 
 // React Native compatible timer functions
 const requestAnimationFrame = (callback: () => void): number => {
@@ -69,12 +61,54 @@ export class RetellWebClient extends EventEmitter {
   };
   private captureAudioFrame?: number;
 
+  /**
+   * Manually register LiveKit globals for React Native
+   * Call this before creating RetellWebClient if you encounter WebRTC issues
+   */
+  public static async registerGlobals(): Promise<void> {
+    try {
+      const { registerGlobals } = require("@livekit/react-native");
+      await registerGlobals();
+      livekitGlobalsRegistered = true;
+      console.log("LiveKit globals registered manually");
+    } catch (error) {
+      throw new Error(
+        "Failed to register LiveKit globals. Ensure @livekit/react-native and @livekit/react-native-webrtc are installed. " +
+          "Error: " +
+          error.message
+      );
+    }
+  }
+
   constructor() {
     super();
   }
 
+  private async ensureLiveKitGlobals(): Promise<void> {
+    try {
+      // Try to register globals if not already done
+      if (!livekitGlobalsRegistered) {
+        const { registerGlobals } = require("@livekit/react-native");
+        await registerGlobals();
+        livekitGlobalsRegistered = true;
+        console.log("LiveKit globals registered successfully");
+      }
+    } catch (error) {
+      console.error("Failed to register LiveKit globals:", error);
+      throw new Error(
+        "WebRTC isn't detected. Please ensure @livekit/react-native-webrtc is properly installed and linked. " +
+          "For React Native 0.60+, run 'cd ios && pod install' for iOS. " +
+          "Original error: " +
+          error.message
+      );
+    }
+  }
+
   public async startCall(startCallConfig: StartCallConfig): Promise<void> {
     try {
+      // Ensure LiveKit globals are registered before creating Room
+      await this.ensureLiveKitGlobals();
+
       // Room options
       this.room = new Room({
         audioCaptureDefaults: {
@@ -104,7 +138,17 @@ export class RetellWebClient extends EventEmitter {
       this.connected = true;
       this.emit("call_started");
     } catch (err) {
-      this.emit("error", "Error starting call");
+      // Provide more specific error information
+      let errorMessage = "Error starting call";
+      if (err.message && err.message.includes("WebRTC")) {
+        errorMessage =
+          "WebRTC initialization failed - ensure React Native WebRTC is properly set up";
+      } else if (err.message && err.message.includes("registerGlobals")) {
+        errorMessage =
+          "LiveKit globals registration failed - check React Native setup";
+      }
+
+      this.emit("error", errorMessage);
       console.error("Error starting call", err);
       // Cleanup
       this.stopCall();

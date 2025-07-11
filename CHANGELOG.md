@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.1.1] - WebRTC Globals Fix
+
+### Fixed
+
+- **WebRTC Registration Issue**: Fixed "WebRTC isn't detected, have you called registerGlobals?" error
+- **Improved Error Handling**: Better error messages for WebRTC initialization failures
+- **Automatic Globals Registration**: SDK now registers LiveKit globals automatically before starting calls
+
+### Added
+
+- **Manual Globals Registration**: Added `RetellWebClient.registerGlobals()` static method for manual setup
+- **Enhanced Documentation**: Added comprehensive WebRTC troubleshooting guide
+- **Better Error Messages**: More specific error messages for different failure scenarios
+- **Complete Demo Example**: Added RetellCallDemo.tsx showing proper usage with WebRTC setup
+
+### Changed
+
+- **Initialization Strategy**: Changed from module-load-time to call-time globals registration
+- **Error Handling**: Improved error handling with specific WebRTC-related error messages
+
 ## [2.1.0] - Final React Native Optimization
 
 ### Fixed

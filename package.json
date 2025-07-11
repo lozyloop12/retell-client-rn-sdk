@@ -1,6 +1,6 @@
 {
   "name": "retell-client-rn-sdk",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Retell AI React Native SDK",
   "main": "dist/index.js",
   "module": "dist/index.m.js",

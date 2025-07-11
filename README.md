@@ -79,6 +79,7 @@ client.on("call_ended", () => {
 client.on("agent_start_talking", () => {
   console.log("Agent started talking");
 });
+});
 
 client.on("agent_stop_talking", () => {
   console.log("Agent stopped talking");
@@ -88,6 +89,64 @@ client.on("agent_stop_talking", () => {
 client.mute();
 client.unmute();
 client.stopCall();
+```
+
+## Troubleshooting
+
+### "WebRTC isn't detected" Error
+
+If you encounter the error "WebRTC isn't detected, have you called registerGlobals?", try these solutions:
+
+#### Option 1: Manual Globals Registration (Recommended)
+
+```javascript
+import { RetellWebClient } from "retell-client-rn-sdk";
+
+// Register globals manually before creating client
+await RetellWebClient.registerGlobals();
+
+const client = new RetellWebClient();
+await client.startCall(config);
+```
+
+#### Option 2: Ensure Proper iOS Setup
+
+Make sure you've run pod install:
+
+```bash
+cd ios && pod install && cd ..
+```
+
+#### Option 3: Check Dependencies
+
+Verify all dependencies are installed:
+
+```bash
+npx retell-verify
+```
+
+#### Option 4: Metro Configuration
+
+If you still have issues, add to your `metro.config.js`:
+
+```javascript
+const { getDefaultConfig, mergeConfig } = require("@react-native/metro-config");
+
+const defaultConfig = getDefaultConfig(__dirname);
+
+const config = {
+  resolver: {
+    alias: {
+      "livekit-client": require.resolve("livekit-client"),
+      "@livekit/react-native": require.resolve("@livekit/react-native"),
+      "@livekit/react-native-webrtc": require.resolve(
+        "@livekit/react-native-webrtc"
+      ),
+    },
+  },
+};
+
+module.exports = mergeConfig(defaultConfig, config);
 ```
 
 ## API Reference

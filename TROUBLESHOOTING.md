@@ -1,6 +1,57 @@
 # Troubleshooting Guide
 
-## Common Installation Issues
+## Critical WebRTC Error
+
+### ❌ `WebRTC isn't detected, have you called registerGlobals?`
+
+**This is the most common error.** It occurs when LiveKit's WebRTC globals are not properly initialized.
+
+#### ✅ Solution 1: Manual Globals Registration (Recommended)
+
+Add this to your code before creating the RetellWebClient:
+
+```javascript
+import { RetellWebClient } from "retell-client-rn-sdk";
+
+// Register globals manually before using the client
+try {
+  await RetellWebClient.registerGlobals();
+  console.log("WebRTC globals registered successfully");
+} catch (error) {
+  console.error("Failed to register WebRTC globals:", error);
+}
+
+const client = new RetellWebClient();
+await client.startCall(config);
+```
+
+#### ✅ Solution 2: iOS Pod Installation
+
+Make sure you've installed iOS pods:
+
+```bash
+cd ios && pod install && cd ..
+```
+
+Then rebuild your app:
+
+```bash
+npx react-native run-ios
+# or
+npx react-native run-android
+```
+
+#### ✅ Solution 3: Verify Dependencies
+
+Run the verification script:
+
+```bash
+npx retell-verify
+```
+
+This will check if all required dependencies are properly installed.
+
+## Other Common Issues
 
 ### 1. `@livekit/react-native-webrtc could not be found`
 

@@ -16,7 +16,9 @@ export declare class RetellWebClient extends EventEmitter {
         cleanup: () => Promise<void>;
     };
     private captureAudioFrame?;
+    static registerGlobals(): Promise<void>;
     constructor();
+    private ensureLiveKitGlobals;
     startCall(startCallConfig: StartCallConfig): Promise<void>;
     startAudioPlayback(): Promise<void>;
     stopCall(): void;
