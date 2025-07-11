@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.1.2] - TextDecoder React Native Compatibility Fix
+
+### Fixed
+
+- **TextDecoder Compatibility**: Fixed "Property 'TextDecoder' doesn't exist" error in React Native
+- **Text Decoding**: Added React Native-compatible text decoder with UTF-8 support
+- **Polyfill Strategy**: Implemented fallback chain: native TextDecoder → Buffer → manual UTF-8 decoding
+
+### Added
+
+- **React Native Text Decoder**: Custom implementation for environments without TextDecoder
+- **UTF-8 Support**: Proper UTF-8 decoding for React Native environments
+- **Error Handling**: Graceful degradation when text decoding fails
+
+### Changed
+
+- **Text Processing**: Replaced direct TextDecoder usage with compatible implementation
+- **Error Resilience**: Improved handling of text decoding edge cases
+
 ## [2.1.1] - WebRTC Globals Fix
 
 ### Fixed

@@ -33,7 +33,61 @@ const cancelAnimationFrame = (id: number): void => {
 };
 
 const hostUrl = "wss://retell-ai-4ihahnq7.livekit.cloud";
-const decoder = new TextDecoder();
+
+// React Native compatible text decoder
+const createTextDecoder = () => {
+  if (typeof TextDecoder !== "undefined") {
+    return new TextDecoder();
+  }
+
+  // Fallback for React Native - proper UTF-8 decoding
+  return {
+    decode: (buffer: Uint8Array): string => {
+      // Convert Uint8Array to string with proper UTF-8 handling
+      try {
+        // Try using Buffer if available (React Native has Buffer polyfill)
+        if (typeof Buffer !== "undefined") {
+          return Buffer.from(buffer).toString("utf8");
+        }
+
+        // Fallback: manual UTF-8 decoding
+        let result = "";
+        let i = 0;
+        while (i < buffer.length) {
+          let byte1 = buffer[i++];
+
+          if (byte1 < 0x80) {
+            // Single byte character
+            result += String.fromCharCode(byte1);
+          } else if ((byte1 & 0xe0) === 0xc0) {
+            // Two byte character
+            let byte2 = buffer[i++];
+            result += String.fromCharCode(
+              ((byte1 & 0x1f) << 6) | (byte2 & 0x3f)
+            );
+          } else if ((byte1 & 0xf0) === 0xe0) {
+            // Three byte character
+            let byte2 = buffer[i++];
+            let byte3 = buffer[i++];
+            result += String.fromCharCode(
+              ((byte1 & 0x0f) << 12) | ((byte2 & 0x3f) << 6) | (byte3 & 0x3f)
+            );
+          } else {
+            // Skip invalid bytes
+            result += String.fromCharCode(0xfffd); // Replacement character
+          }
+        }
+        return result;
+      } catch (error) {
+        console.warn("Error decoding text:", error);
+        // Last resort: simple conversion
+        return String.fromCharCode.apply(null, Array.from(buffer));
+      }
+    },
+  };
+};
+
+const decoder = createTextDecoder();
 
 export interface StartCallConfig {
   accessToken: string;

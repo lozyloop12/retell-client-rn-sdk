@@ -1,6 +1,6 @@
 {
   "name": "retell-client-rn-sdk",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Retell AI React Native SDK",
   "main": "dist/index.js",
   "module": "dist/index.m.js",
@@ -24,6 +24,7 @@
     "type-check": "tsc --noEmit",
     "test:import": "node test/import-test.js",
     "test:compatibility": "node test/compatibility-test.js",
+    "test:textdecoder": "node test/textdecoder-test.js",
     "verify-rn": "node scripts/verify-rn-installation.js",
     "postinstall": "node scripts/postinstall.js"
   },

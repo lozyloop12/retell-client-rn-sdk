@@ -51,6 +51,18 @@ npx retell-verify
 
 This will check if all required dependencies are properly installed.
 
+### ❌ `Property 'TextDecoder' doesn't exist`
+
+**Problem:** React Native doesn't have the web `TextDecoder` API by default.
+
+**Solution:** This is automatically handled by the SDK v2.1.1+. The SDK includes a React Native-compatible text decoder that:
+
+1. Uses native `TextDecoder` if available
+2. Falls back to `Buffer` polyfill if available
+3. Includes manual UTF-8 decoding as final fallback
+
+**No action needed** - this is resolved automatically in the latest SDK version.
+
 ## Other Common Issues
 
 ### 1. `@livekit/react-native-webrtc could not be found`
