@@ -5,10 +5,20 @@
 ### 1. Install Packages
 
 ```bash
-# Install the Retell SDK (includes all dependencies)
+# Step 1: Install the Retell SDK
 npm install retell-client-rn-sdk
 
-# For iOS, install pods
+# Step 2: Install required peer dependencies
+npm install @livekit/react-native @livekit/react-native-webrtc livekit-client
+
+# Step 3: For iOS, install pods
+cd ios && pod install && cd ..
+```
+
+**Alternative with yarn:**
+
+```bash
+yarn add retell-client-rn-sdk @livekit/react-native @livekit/react-native-webrtc livekit-client
 cd ios && pod install && cd ..
 ```
 

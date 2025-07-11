@@ -1,6 +1,29 @@
 # Changelog
 
+## [2.0.9] - Complete Dependency Management Solution
+
+### Fixed
+
+- **Resolved WebRTC Dependency Error**: Completely fixed "Unable to resolve module @livekit/react-native-webrtc" by properly managing peer dependencies
+- **Clear Installation Process**: Restructured dependencies to use proper peerDependencies configuration
+- **Enhanced Error Messages**: Better guidance when dependencies are missing
+
+### Added
+
+- **Automatic Setup Script**: `npx retell-client-rn-sdk setup` - one command installation
+- **Setup Verification Tool**: `npx retell-client-rn-sdk verify` - check installation status
+- **Interactive Postinstall Guide**: Automatic guidance after installation
+- **Comprehensive Documentation**: Updated all guides with clear installation steps
+
+### Changed
+
+- **Dependency Structure**: Moved LiveKit packages to peerDependencies for proper resolution
+- **Installation Flow**: Simplified to use automated scripts or clear manual steps
+- **Documentation**: Complete rewrite of installation and troubleshooting guides
+
 ## [2.0.8] - Dependency Fix
+
+// ...existing changelog content...
 
 ### Fixed
 

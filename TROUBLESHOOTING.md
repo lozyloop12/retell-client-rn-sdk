@@ -4,13 +4,27 @@
 
 ### 1. `@livekit/react-native-webrtc could not be found`
 
-**Solution:** This issue is now resolved in v2.0.7+. Simply install:
+**Problem:** This error occurs when the required LiveKit dependencies are not installed in your React Native project.
+
+**Solution:** Install all required peer dependencies:
 
 ```bash
+# Install the SDK
 npm install retell-client-rn-sdk
+
+# Install required peer dependencies
+npm install @livekit/react-native @livekit/react-native-webrtc livekit-client
+
+# For iOS, install pods
+cd ios && pod install && cd ..
 ```
 
-All dependencies are now included automatically.
+**Alternative with yarn:**
+
+```bash
+yarn add retell-client-rn-sdk @livekit/react-native @livekit/react-native-webrtc livekit-client
+cd ios && pod install && cd ..
+```
 
 ### 2. Metro Bundling Issues
 
