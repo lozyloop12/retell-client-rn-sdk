@@ -1,4 +1,12 @@
-# Retell AI React Native SDK
+# Re## Installation
+
+```bash
+npm install retell-client-rn-sdk
+# or
+yarn add retell-client-rn-sdk
+```
+
+**Note:** All required dependencies (including `@livekit/react-native`, `@livekit/react-native-webrtc`, and `livekit-client`) are automatically installed with the SDK.ive SDK
 
 A React Native SDK for integrating Retell AI's voice calling capabilities into your mobile applications.
 
@@ -118,5 +126,11 @@ This SDK is specifically adapted for React Native environments:
 - Handles platform-specific audio APIs
 - Manages React Native lifecycle considerations
 - Audio visualization features are limited compared to web browsers
+
+## Documentation
+
+- [Integration Guide](./INTEGRATION_GUIDE.md) - Step-by-step setup instructions
+- [Troubleshooting](./TROUBLESHOOTING.md) - Common issues and solutions
+- [Example Implementation](./example/RetellCallExample.tsx) - Complete React Native component
 
 For more information about Retell AI, visit [Retell AI Documentation](https://docs.retellai.com/).

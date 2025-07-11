@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.0.8] - Dependency Fix
+
+### Fixed
+
+- **Missing WebRTC Dependency**: Fixed "Unable to resolve module @livekit/react-native-webrtc" error by including `@livekit/react-native-webrtc` as a direct dependency
+- **Simplified Installation**: Users now only need to run `npm install retell-client-rn-sdk` - all dependencies are included automatically
+- **Updated Documentation**: Simplified installation instructions and added comprehensive troubleshooting guide
+
+### Added
+
+- **Troubleshooting Guide**: Added detailed troubleshooting documentation for common issues
+- **Build Verification Test**: Added test script to verify SDK builds correctly
+- **Enhanced Error Handling**: Better error messages for dependency-related issues
+
 ## [2.0.7] - React Native Support
 
 ### Added
