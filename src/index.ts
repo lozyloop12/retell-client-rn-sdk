@@ -351,4 +351,3 @@ export class RetellWebClient extends EventEmitter {
 }
 
 // Export the client for React Native usage
-export default RetellWebClient;

@@ -211,6 +211,44 @@ npm install
 
 ### 9. TypeScript Errors
 
+#### ❌ `Only a void function can be called with the 'new' keyword`
+
+This TypeScript error occurs when the module resolution can't find the proper type definitions.
+
+**Solution:** Use the require syntax with type casting:
+
+```typescript
+// Instead of:
+import { RetellWebClient } from "retell-client-rn-sdk";
+
+// Use this pattern:
+interface IRetellWebClient {
+  on(event: string, callback: (...args: any[]) => void): void;
+  startCall(config: {
+    accessToken: string;
+    sampleRate?: number;
+    emitRawAudioSamples?: boolean;
+  }): Promise<void>;
+  stopCall(): void;
+  mute(): void;
+  unmute(): void;
+}
+
+interface RetellWebClientConstructor {
+  new (): IRetellWebClient;
+  registerGlobals(): Promise<void>;
+}
+
+const { RetellWebClient } = require("retell-client-rn-sdk") as {
+  RetellWebClient: RetellWebClientConstructor;
+};
+
+// Now you can use it properly:
+const client = new RetellWebClient();
+```
+
+#### General TypeScript Setup
+
 Ensure your `tsconfig.json` includes:
 
 ```json
@@ -218,7 +256,8 @@ Ensure your `tsconfig.json` includes:
   "compilerOptions": {
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "moduleResolution": "node"
   }
 }
 ```

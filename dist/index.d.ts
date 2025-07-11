@@ -29,4 +29,3 @@ export declare class RetellWebClient extends EventEmitter {
     private handleAudioEvents;
     private handleDataEvents;
 }
-export default RetellWebClient;

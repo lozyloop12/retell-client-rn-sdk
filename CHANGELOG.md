@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.1.4] - Critical WebRTC Initialization Fix
+
+### Fixed
+
+- **Example Code Error**: Fixed RetellCallExample.tsx to properly initialize WebRTC before creating client
+- **WebRTC Registration Timing**: Client must call `await RetellWebClient.registerGlobals()` BEFORE `new RetellWebClient()`
+- **Error Handling**: Better error messages for WebRTC initialization failures
+- **UI State Management**: Proper handling of uninitialized client state
+
+### Added
+
+- **RetellCallExampleFixed.tsx**: Corrected example with proper WebRTC initialization sequence
+- **Better UX**: Loading states and error recovery options in example
+- **Comprehensive Error Messages**: Detailed setup instructions in error dialogs
+
+### Changed
+
+- **Example Pattern**: Switched from immediate client creation to async initialization pattern
+- **Error Recovery**: Added retry functionality for failed WebRTC setup
+
 ## [2.1.3] - Comprehensive WebRTC Setup Guide
 
 ### Added

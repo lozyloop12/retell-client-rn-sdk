@@ -33,7 +33,12 @@ const { RetellWebClient } = require("retell-client-rn-sdk") as {
   RetellWebClient: RetellWebClientConstructor;
 };
 
-const RetellCallExample = () => {
+/**
+ * CORRECTED Retell Call Example - Fixes WebRTC initialization
+ *
+ * Key Fix: Register WebRTC globals BEFORE creating RetellWebClient
+ */
+const RetellCallExampleFixed = () => {
   const [client, setClient] = useState<IRetellWebClient | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -63,11 +68,12 @@ const RetellCallExample = () => {
     try {
       setCallStatus("Initializing WebRTC...");
 
-      // CRITICAL: Register WebRTC globals BEFORE creating the client
+      // 🚨 CRITICAL FIX: Register WebRTC globals FIRST
+      console.log("Registering WebRTC globals...");
       await RetellWebClient.registerGlobals();
-      console.log("WebRTC globals registered successfully");
+      console.log("✅ WebRTC globals registered successfully");
 
-      // Now create the client
+      // ✅ Now safe to create the client
       const retellClient = new RetellWebClient();
 
       // Set up event listeners
@@ -96,6 +102,7 @@ const RetellCallExample = () => {
       });
 
       retellClient.on("error", (error: string) => {
+        console.error("Retell error:", error);
         Alert.alert("Call Error", error);
         setCallStatus("Error");
       });
@@ -103,15 +110,16 @@ const RetellCallExample = () => {
       setClient(retellClient);
       setCallStatus("Ready to call");
     } catch (error: any) {
-      console.error("Failed to initialize WebRTC:", error);
+      console.error("❌ Failed to initialize WebRTC:", error);
       Alert.alert(
-        "WebRTC Initialization Failed",
-        `Please ensure all required packages are installed:\n\n` +
+        "WebRTC Setup Required",
+        `Please install the required packages:\n\n` +
           `npm install @livekit/react-native @livekit/react-native-webrtc livekit-client\n\n` +
           `For iOS: cd ios && pod install\n\n` +
+          `Then restart the app.\n\n` +
           `Error: ${error.message}`
       );
-      setCallStatus("WebRTC Error");
+      setCallStatus("Setup Required");
     }
   };
 
@@ -148,8 +156,17 @@ const RetellCallExample = () => {
     try {
       setCallStatus("Connecting...");
 
-      // Replace with your actual access token
+      // ⚠️ Replace with your actual access token from Retell AI
       const accessToken = "your-retell-access-token-here";
+
+      if (accessToken === "your-retell-access-token-here") {
+        Alert.alert(
+          "Access Token Required",
+          "Please replace 'your-retell-access-token-here' with your actual Retell AI access token."
+        );
+        setCallStatus("Token Required");
+        return;
+      }
 
       await client.startCall({
         accessToken,
@@ -157,6 +174,7 @@ const RetellCallExample = () => {
         emitRawAudioSamples: false,
       });
     } catch (error: any) {
+      console.error("Start call error:", error);
       Alert.alert("Failed to start call", error.message);
       setCallStatus("Error");
     }
@@ -183,6 +201,7 @@ const RetellCallExample = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Retell AI Voice Call</Text>
+      <Text style={styles.subtitle}>(Fixed WebRTC Initialization)</Text>
 
       <View style={styles.statusContainer}>
         <Text style={styles.statusLabel}>Status:</Text>
@@ -201,16 +220,16 @@ const RetellCallExample = () => {
         {!client ? (
           <View style={styles.initializingContainer}>
             <Text style={styles.initializingText}>
-              {callStatus === "WebRTC Error"
+              {callStatus === "Setup Required"
                 ? "⚠️ Setup Required"
-                : "🔄 Initializing..."}
+                : "🔄 Initializing WebRTC..."}
             </Text>
-            {callStatus === "WebRTC Error" && (
+            {callStatus === "Setup Required" && (
               <TouchableOpacity
                 style={styles.retryButton}
                 onPress={initializeWebRTC}
               >
-                <Text style={styles.buttonText}>Retry</Text>
+                <Text style={styles.buttonText}>Retry Setup</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -218,12 +237,21 @@ const RetellCallExample = () => {
           <TouchableOpacity
             style={[
               styles.startButton,
-              callStatus === "Initializing WebRTC..." && styles.disabledButton,
+              (callStatus === "Initializing WebRTC..." ||
+                callStatus === "Token Required") &&
+                styles.disabledButton,
             ]}
             onPress={startCall}
-            disabled={callStatus === "Initializing WebRTC..."}
+            disabled={
+              callStatus === "Initializing WebRTC..." ||
+              callStatus === "Token Required"
+            }
           >
-            <Text style={styles.buttonText}>Start Call</Text>
+            <Text style={styles.buttonText}>
+              {callStatus === "Token Required"
+                ? "Set Access Token"
+                : "Start Call"}
+            </Text>
           </TouchableOpacity>
         ) : (
           <>
@@ -242,6 +270,19 @@ const RetellCallExample = () => {
           </>
         )}
       </View>
+
+      {/* Help Text */}
+      <View style={styles.helpContainer}>
+        <Text style={styles.helpText}>
+          💡 If you see "WebRTC native module not found":
+        </Text>
+        <Text style={styles.helpText}>
+          1. Install: npm install @livekit/react-native
+          @livekit/react-native-webrtc livekit-client
+        </Text>
+        <Text style={styles.helpText}>2. iOS: cd ios && pod install</Text>
+        <Text style={styles.helpText}>3. Rebuild and restart app</Text>
+      </View>
     </View>
   );
 };
@@ -257,7 +298,8 @@ const getStatusColor = (status: string) => {
     case "Initializing WebRTC...":
       return { color: "#FF9800" };
     case "Error":
-    case "WebRTC Error":
+    case "Setup Required":
+    case "Token Required":
       return { color: "#F44336" };
     default:
       return { color: "#757575" };
@@ -275,8 +317,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 30,
+    marginBottom: 5,
     color: "#333",
+    textAlign: "center",
+  },
+  subtitle: {
+    fontSize: 14,
+    color: "#666",
+    marginBottom: 30,
+    fontStyle: "italic",
   },
   statusContainer: {
     flexDirection: "row",
@@ -305,6 +354,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     gap: 15,
+    marginBottom: 30,
   },
   initializingContainer: {
     alignItems: "center",
@@ -366,6 +416,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
+  helpContainer: {
+    backgroundColor: "#FFF3E0",
+    padding: 15,
+    borderRadius: 10,
+    borderLeftWidth: 4,
+    borderLeftColor: "#FF9800",
+  },
+  helpText: {
+    fontSize: 12,
+    color: "#E65100",
+    marginBottom: 3,
+  },
 });
 
-export default RetellCallExample;
+export default RetellCallExampleFixed;

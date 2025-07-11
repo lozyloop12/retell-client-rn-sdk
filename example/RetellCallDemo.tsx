@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { RetellWebClient } from "retell-client-rn-sdk";
+import { IRetellWebClient, getRetellWebClient } from "./types";
+
+// Get the RetellWebClient with proper typing
+const RetellWebClient = getRetellWebClient();
 
 const RetellCallDemo = () => {
-  const [client, setClient] = useState<any>(null);
+  const [client, setClient] = useState<IRetellWebClient | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [isAgentTalking, setIsAgentTalking] = useState(false);
   const [isGlobalsRegistered, setIsGlobalsRegistered] = useState(false);
@@ -77,14 +80,45 @@ const RetellCallDemo = () => {
     }
 
     try {
+      const accessToken: string = "YOUR_ACCESS_TOKEN_HERE"; // Replace with your actual token
+
+      // Check if user has replaced the placeholder token
+      if (accessToken === "YOUR_ACCESS_TOKEN_HERE") {
+        Alert.alert(
+          "Access Token Required",
+          "Please replace 'YOUR_ACCESS_TOKEN_HERE' with your actual Retell AI access token.\n\nYou can get this from your Retell AI dashboard."
+        );
+        return;
+      }
+
+      console.log(
+        "Starting call with token:",
+        accessToken.substring(0, 10) + "..."
+      );
+
       await client.startCall({
-        accessToken: "YOUR_ACCESS_TOKEN_HERE", // Replace with your actual token
+        accessToken,
         sampleRate: 48000,
         emitRawAudioSamples: false,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to start call:", error);
-      Alert.alert("Call Error", error.message);
+
+      // Provide more specific error messages
+      let errorMessage = error.message || "Unknown error";
+
+      if (
+        errorMessage.includes("401") ||
+        errorMessage.includes("unauthorized")
+      ) {
+        errorMessage =
+          "Invalid access token. Please check your Retell AI access token.";
+      } else if (errorMessage.includes("WebRTC")) {
+        errorMessage =
+          "WebRTC error. Please ensure all required packages are installed:\nnpm install @livekit/react-native @livekit/react-native-webrtc livekit-client";
+      }
+
+      Alert.alert("Call Error", errorMessage);
     }
   };
 
