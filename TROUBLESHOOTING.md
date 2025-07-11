@@ -6,15 +6,21 @@
 
 **This is the #1 issue!** These errors mean you haven't installed the required native WebRTC modules **in your React Native project**.
 
-#### ✅ SOLUTION: Complete Installation
+#### ✅ SOLUTION: Check Auto-Installation
 
-**IMPORTANT:** The SDK should auto-install dependencies, but if you're still getting these errors:
+**The SDK should automatically install all dependencies when you run:**
+
+```bash
+npm install retell-client-rn-sdk
+```
+
+**If you're still getting these errors, the auto-installation may have failed. Try:**
 
 ```bash
 # 1. Navigate to YOUR React Native project
 cd /path/to/your/react-native-project
 
-# 2. Install manually if auto-install failed
+# 2. Install manually
 npm install @livekit/react-native @livekit/react-native-webrtc livekit-client
 
 # 3. iOS: Install pods (REQUIRED for iOS)

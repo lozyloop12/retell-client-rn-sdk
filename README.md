@@ -9,18 +9,18 @@ A React Native SDK for integrating Retell AI's voice calling capabilities into y
 ### For React Native Projects (Automatic Setup)
 
 ```bash
-# Install the SDK - dependencies will be auto-installed
+# Install the SDK - all dependencies auto-install!
 npm install retell-client-rn-sdk
 
 # iOS: Install pods (still required)
 cd ios && pod install && cd ..
 ```
 
-The SDK will automatically install required dependencies (`@livekit/react-native`, `@livekit/react-native-webrtc`, `livekit-client`) during installation.
+✅ **That's it!** All required LiveKit dependencies (`@livekit/react-native`, `@livekit/react-native-webrtc`, `livekit-client`) are automatically installed.
 
-### Manual Installation (if auto-install fails)
+### Manual Installation (if needed)
 
-If the automatic installation doesn't work, install manually:
+If you prefer to install manually or encounter issues:
 
 ```bash
 # Install ALL required packages

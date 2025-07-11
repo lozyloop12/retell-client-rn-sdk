@@ -27,6 +27,7 @@
     "test:import": "node test/import-test.js",
     "test:compatibility": "node test/compatibility-test.js",
     "test:textdecoder": "node test/textdecoder-test.js",
+    "test:auto-deps": "node scripts/test-auto-deps.js",
     "verify-rn": "node scripts/verify-rn-installation.js",
     "verify-webrtc": "node scripts/verify-webrtc.js",
     "postinstall": "node scripts/postinstall.js"
@@ -42,27 +43,17 @@
   "license": "ISC",
   "peerDependencies": {
     "react": ">=16.8.0",
-    "react-native": ">=0.60.0",
-    "@livekit/react-native": "^2.7.0",
-    "@livekit/react-native-webrtc": "^125.0.0",
-    "livekit-client": "^2.15.0"
+    "react-native": ">=0.60.0"
   },
-  "peerDependenciesMeta": {
-    "@livekit/react-native": {
-      "optional": false
-    },
-    "@livekit/react-native-webrtc": {
-      "optional": false
-    },
-    "livekit-client": {
-      "optional": false
-    }
-  },
+  "peerDependenciesMeta": {},
   "devDependencies": {
     "microbundle": "^0.15.1",
     "@types/react-native": "^0.72.0"
   },
   "dependencies": {
-    "eventemitter3": "^5.0.1"
+    "eventemitter3": "^5.0.1",
+    "@livekit/react-native": "^2.7.0",
+    "@livekit/react-native-webrtc": "^125.0.0",
+    "livekit-client": "^2.15.0"
   }
 }
