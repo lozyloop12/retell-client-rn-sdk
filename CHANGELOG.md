@@ -1,5 +1,37 @@
 # Changelog
 
+## [2.2.0] - Auto-Installation & Improved Developer Experience
+
+### Added
+
+- **🚀 Auto-Installation**: SDK now automatically installs required LiveKit dependencies during installation
+- **📦 Smart Dependency Management**: Moved LiveKit packages to peerDependencies with automatic installation fallback
+- **🔧 Enhanced Postinstall Script**: Detects package manager (npm/yarn/pnpm) and auto-installs missing dependencies
+- **🩺 New Diagnosis Tool**: `npx retell-diagnose` provides instant troubleshooting and setup guidance
+- **📋 Project Root Detection**: Intelligent detection of React Native project structure for better installation
+- **⚡ Streamlined Setup**: Users now only need `npm install retell-client-rn-sdk` for complete setup
+
+### Fixed
+
+- **TypeScript Import Issues**: Resolved "Only a void function can be called with the 'new' keyword" errors
+- **Module Resolution**: Fixed ES6 import conflicts with CommonJS exports
+- **Example Code Types**: Added proper TypeScript interfaces for all example files
+- **Build Warnings**: Eliminated mixed export warnings during SDK build
+
+### Changed
+
+- **Installation Process**: Simplified from manual dependency installation to automatic setup
+- **Documentation**: Updated README and troubleshooting guides to reflect auto-installation
+- **Dependency Structure**: Reorganized package.json for better React Native compatibility
+- **Error Messages**: More specific and actionable error messages for missing dependencies
+
+### Developer Experience
+
+- **One-Command Setup**: `npm install retell-client-rn-sdk` now handles everything automatically
+- **Better Debugging**: Enhanced scripts and tools for troubleshooting installation issues
+- **Comprehensive Types**: Full TypeScript support with proper type definitions
+- **Shared Type Definitions**: Created reusable type interfaces for example consistency
+
 ## [2.1.4] - Critical WebRTC Initialization Fix
 
 ### Fixed

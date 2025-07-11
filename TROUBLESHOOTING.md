@@ -8,14 +8,14 @@
 
 #### ✅ SOLUTION: Complete Installation
 
-**IMPORTANT:** Run these commands in your React Native project directory (where your `package.json` is), not in the SDK folder!
+**IMPORTANT:** The SDK should auto-install dependencies, but if you're still getting these errors:
 
 ```bash
 # 1. Navigate to YOUR React Native project
 cd /path/to/your/react-native-project
 
-# 2. Install ALL required packages (not just the SDK!)
-npm install retell-client-rn-sdk @livekit/react-native @livekit/react-native-webrtc livekit-client
+# 2. Install manually if auto-install failed
+npm install @livekit/react-native @livekit/react-native-webrtc livekit-client
 
 # 3. iOS: Install pods (REQUIRED for iOS)
 cd ios && pod install && cd ..
