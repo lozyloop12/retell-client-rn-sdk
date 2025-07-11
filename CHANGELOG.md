@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.1.3] - Comprehensive WebRTC Setup Guide
+
+### Added
+
+- **Complete React Native Setup Guide**: Added REACT_NATIVE_SETUP.md with step-by-step instructions
+- **WebRTC Dependency Checker**: New `npx retell-check-webrtc` command to diagnose WebRTC issues
+- **Enhanced Troubleshooting**: Updated guides with specific solutions for "WebRTC native module not found"
+- **Improved Installation Warnings**: Postinstall script now clearly warns about missing dependencies
+
+### Changed
+
+- **README Priority**: React Native setup is now prominently featured at the top
+- **Installation Instructions**: Clear distinction between React Native and web usage
+- **Error Messages**: More specific guidance for WebRTC-related errors
+- **Verification Tools**: Enhanced dependency checking with focus on critical WebRTC modules
+
+### Fixed
+
+- **Setup Clarity**: Addressed confusion about required dependencies for React Native projects
+- **Installation Flow**: Clear step-by-step process to avoid "WebRTC native module not found" errors
+
 ## [2.1.2] - TextDecoder React Native Compatibility Fix
 
 ### Fixed

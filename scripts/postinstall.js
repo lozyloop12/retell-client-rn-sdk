@@ -23,8 +23,8 @@ if (!isReactNativeProject) {
   return;
 }
 
-console.log("📦 Required peer dependencies detected!");
-console.log("   Please install the following dependencies:\n");
+console.log("� CRITICAL: React Native requires additional setup!");
+console.log("   The SDK won't work without these required packages:\n");
 
 const requiredDeps = [
   "@livekit/react-native@^2.7.6",
@@ -37,11 +37,15 @@ console.log("   # or");
 console.log("   yarn add " + requiredDeps.join(" "));
 
 console.log("\n📱 Additional setup required:");
-console.log("   • iOS: cd ios && pod install");
+console.log("   • iOS: cd ios && pod install (REQUIRED!)");
 console.log("   • Add microphone permissions to your platform configs");
-console.log("\n📖 For detailed setup instructions, see:");
+console.log("\n📖 COMPLETE SETUP GUIDE:");
+console.log("   👉 See REACT_NATIVE_SETUP.md in the package folder");
+console.log("   👉 Or troubleshooting: TROUBLESHOOTING.md\n");
+
+console.log("🚨 COMMON ERROR: 'WebRTC native module not found'");
 console.log(
-  "   https://github.com/your-repo/retell-client-rn-sdk/blob/main/INTEGRATION_GUIDE.md\n"
+  "   This means you haven't installed the required packages above!\n"
 );
 
 // Check if dependencies are already installed
@@ -61,8 +65,10 @@ if (fs.existsSync(packageJsonPath)) {
   });
 
   if (missingDeps.length === 0) {
-    console.log("✅ All required dependencies are already installed!\n");
+    console.log("✅ All required dependencies are installed!");
+    console.log("   Don't forget: cd ios && pod install\n");
   } else {
-    console.log("⚠️  Missing dependencies: " + missingDeps.join(", ") + "\n");
+    console.log("❌ MISSING DEPENDENCIES: " + missingDeps.join(", "));
+    console.log("   Install them now or the SDK won't work!\n");
   }
 }

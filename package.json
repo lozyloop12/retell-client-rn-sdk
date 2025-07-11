@@ -1,6 +1,6 @@
 {
   "name": "retell-client-rn-sdk",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Retell AI React Native SDK",
   "main": "dist/index.js",
   "module": "dist/index.m.js",
@@ -15,7 +15,8 @@
     }
   },
   "bin": {
-    "retell-verify": "./scripts/verify-rn-installation.js"
+    "retell-verify": "./scripts/verify-rn-installation.js",
+    "retell-check-webrtc": "./scripts/verify-webrtc.js"
   },
   "scripts": {
     "build": "rm -rf dist && microbundle --tsconfig tsconfig.json --no-sourcemap",
@@ -26,6 +27,7 @@
     "test:compatibility": "node test/compatibility-test.js",
     "test:textdecoder": "node test/textdecoder-test.js",
     "verify-rn": "node scripts/verify-rn-installation.js",
+    "verify-webrtc": "node scripts/verify-webrtc.js",
     "postinstall": "node scripts/postinstall.js"
   },
   "keywords": [

@@ -1,6 +1,41 @@
 # Troubleshooting Guide
 
-## Critical WebRTC Error
+## 🚨 MOST COMMON ISSUE: Missing WebRTC Native Modules
+
+### ❌ `WebRTC native module not found` or `Cannot read property 'registerGlobals' of undefined`
+
+**This is the #1 issue!** It means you haven't installed the required native WebRTC modules.
+
+#### ✅ SOLUTION: Complete Installation
+
+You MUST install ALL required packages, not just the SDK:
+
+```bash
+# Install EVERYTHING needed for React Native
+npm install retell-client-rn-sdk @livekit/react-native @livekit/react-native-webrtc livekit-client
+
+# iOS: Install pods (REQUIRED)
+cd ios && pod install && cd ..
+
+# Rebuild your app
+npx react-native run-ios  # or run-android
+```
+
+#### 📖 Full Setup Guide
+
+👉 **Follow the complete guide**: [REACT_NATIVE_SETUP.md](./REACT_NATIVE_SETUP.md)
+
+This guide covers:
+
+- ✅ All required packages
+- ✅ iOS pod installation
+- ✅ Android configuration
+- ✅ Permissions setup
+- ✅ WebRTC initialization
+
+---
+
+## Other Issues
 
 ### ❌ `WebRTC isn't detected, have you called registerGlobals?`
 

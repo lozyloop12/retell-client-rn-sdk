@@ -2,17 +2,27 @@
 
 A React Native SDK for integrating Retell AI's voice calling capabilities into your mobile applications.
 
-## Installation
+⚠️ **IMPORTANT**: For React Native projects, additional setup is required. See [React Native Setup Guide](./REACT_NATIVE_SETUP.md) for complete instructions.
 
-### Simple Installation (Recommended)
+## Quick Installation
+
+### For React Native Projects (Most Users)
+
+```bash
+# Install ALL required packages
+npm install retell-client-rn-sdk @livekit/react-native @livekit/react-native-webrtc livekit-client
+
+# iOS: Install pods
+cd ios && pod install && cd ..
+```
+
+📖 **Complete Setup Guide**: [REACT_NATIVE_SETUP.md](./REACT_NATIVE_SETUP.md)
+
+### For Testing/Web Projects Only
 
 ```bash
 npm install retell-client-rn-sdk
-# or
-yarn add retell-client-rn-sdk
 ```
-
-**That's it!** All required dependencies are automatically installed.
 
 ### Verify Installation
 
