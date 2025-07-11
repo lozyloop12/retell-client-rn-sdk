@@ -1,9 +1,10 @@
+import { registerGlobals } from "@livekit/react-native";
 import { EventEmitter } from "eventemitter3";
 import {
   DataPacket_Kind,
+  RemoteAudioTrack,
   RemoteParticipant,
   RemoteTrack,
-  RemoteAudioTrack,
   RemoteTrackPublication,
   Room,
   RoomEvent,
@@ -11,8 +12,32 @@ import {
   createAudioAnalyser,
 } from "livekit-client";
 
+// React Native compatible timer functions
+const requestAnimationFrame = (callback: () => void): number => {
+  if (typeof window !== "undefined" && window.requestAnimationFrame) {
+    return window.requestAnimationFrame(callback);
+  }
+  // Fallback for React Native
+  return setTimeout(callback, 16) as any; // ~60fps
+};
+
+const cancelAnimationFrame = (id: number): void => {
+  if (typeof window !== "undefined" && window.cancelAnimationFrame) {
+    window.cancelAnimationFrame(id);
+  } else {
+    clearTimeout(id);
+  }
+};
+
 const hostUrl = "wss://retell-ai-4ihahnq7.livekit.cloud";
 const decoder = new TextDecoder();
+
+// Initialize React Native globals for LiveKit
+try {
+  registerGlobals();
+} catch (error) {
+  console.warn("Failed to register LiveKit globals:", error);
+}
 
 export interface StartCallConfig {
   accessToken: string;
@@ -33,12 +58,12 @@ export class RetellWebClient extends EventEmitter {
   // Analyser node for agent audio, only available when
   // emitRawAudioSamples is true. Can directly use / modify this for visualization.
   // contains a calculateVolume helper method to get the current volume.
-  public analyzerComponent: {
+  public analyzerComponent?: {
     calculateVolume: () => number;
     analyser: AnalyserNode;
     cleanup: () => Promise<void>;
   };
-  private captureAudioFrame: number;
+  private captureAudioFrame?: number;
 
   constructor() {
     super();
@@ -105,7 +130,7 @@ export class RetellWebClient extends EventEmitter {
     }
 
     if (this.captureAudioFrame) {
-      window.cancelAnimationFrame(this.captureAudioFrame);
+      cancelAnimationFrame(this.captureAudioFrame);
       delete this.captureAudioFrame;
     }
   }
@@ -124,8 +149,8 @@ export class RetellWebClient extends EventEmitter {
     let dataArray = new Float32Array(bufferLength);
     this.analyzerComponent.analyser.getFloatTimeDomainData(dataArray);
     this.emit("audio", dataArray);
-    this.captureAudioFrame = window.requestAnimationFrame(() =>
-      this.captureAudioSamples(),
+    this.captureAudioFrame = requestAnimationFrame(() =>
+      this.captureAudioSamples()
     );
   }
 
@@ -139,7 +164,7 @@ export class RetellWebClient extends EventEmitter {
             this.stopCall();
           }, 500);
         }
-      },
+      }
     );
 
     this.room.on(RoomEvent.Disconnected, () => {
@@ -154,7 +179,7 @@ export class RetellWebClient extends EventEmitter {
       (
         track: RemoteTrack,
         publication: RemoteTrackPublication,
-        participant: RemoteParticipant,
+        participant: RemoteParticipant
       ) => {
         if (
           track.kind === Track.Kind.Audio &&
@@ -166,17 +191,24 @@ export class RetellWebClient extends EventEmitter {
             this.emit("call_ready");
 
             if (startCallConfig.emitRawAudioSamples) {
-              this.analyzerComponent = createAudioAnalyser(track);
-              this.captureAudioFrame = window.requestAnimationFrame(() =>
-                this.captureAudioSamples(),
-              );
+              try {
+                this.analyzerComponent = createAudioAnalyser(track);
+                this.captureAudioFrame = requestAnimationFrame(() =>
+                  this.captureAudioSamples()
+                );
+              } catch (error) {
+                console.warn(
+                  "Audio analysis not supported in React Native:",
+                  error
+                );
+              }
             }
           }
 
           // Start playing audio for subscribed tracks
           track.attach();
         }
-      },
+      }
     );
   }
 
@@ -187,7 +219,7 @@ export class RetellWebClient extends EventEmitter {
         payload: Uint8Array,
         participant?: RemoteParticipant,
         kind?: DataPacket_Kind,
-        topic?: string,
+        topic?: string
       ) => {
         try {
           // parse server data
@@ -211,7 +243,10 @@ export class RetellWebClient extends EventEmitter {
         } catch (err) {
           console.error("Error decoding data received", err);
         }
-      },
+      }
     );
   }
 }
+
+// Export the client for React Native usage
+export default RetellWebClient;

@@ -1,22 +1,38 @@
 {
-  "name": "retell-client-js-sdk",
+  "name": "retell-client-rn-sdk",
   "version": "2.0.7",
-  "description": "",
+  "description": "Retell AI React Native SDK",
   "main": "dist/index.js",
   "module": "dist/index.m.js",
-  "unpkg": "dist/index.umd.js",
   "types": "dist/index.d.ts",
+  "react-native": "dist/index.js",
   "scripts": {
-    "build": "rm -rf dist && microbundle --tsconfig tsconfig.json --no-sourcemap"
+    "build": "rm -rf dist && microbundle --tsconfig tsconfig.json --no-sourcemap",
+    "dev": "microbundle watch --tsconfig tsconfig.json --no-sourcemap",
+    "prepublishOnly": "npm run build",
+    "type-check": "tsc --noEmit"
   },
-  "keywords": [],
+  "keywords": [
+    "retell",
+    "ai",
+    "react-native",
+    "voice",
+    "call"
+  ],
   "author": "",
   "license": "ISC",
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-native": ">=0.60.0",
+    "@livekit/react-native-webrtc": "^1.0.0"
+  },
   "devDependencies": {
-    "microbundle": "^0.15.1"
+    "microbundle": "^0.15.1",
+    "@types/react-native": "^0.72.0"
   },
   "dependencies": {
     "eventemitter3": "^5.0.1",
-    "livekit-client": "^2.5.1"
+    "@livekit/react-native": "^2.7.6",
+    "livekit-client": "^2.9.8"
   }
 }

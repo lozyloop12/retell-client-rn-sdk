@@ -10,12 +10,12 @@ export declare class RetellWebClient extends EventEmitter {
     private room;
     private connected;
     isAgentTalking: boolean;
-    analyzerComponent: {
+    analyzerComponent?: {
         calculateVolume: () => number;
         analyser: AnalyserNode;
         cleanup: () => Promise<void>;
     };
-    private captureAudioFrame;
+    private captureAudioFrame?;
     constructor();
     startCall(startCallConfig: StartCallConfig): Promise<void>;
     startAudioPlayback(): Promise<void>;
@@ -27,3 +27,4 @@ export declare class RetellWebClient extends EventEmitter {
     private handleAudioEvents;
     private handleDataEvents;
 }
+export default RetellWebClient;
